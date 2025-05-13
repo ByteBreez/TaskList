@@ -10,7 +10,6 @@ import GuestDashboard from './components/GuestDashboard';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     api
@@ -23,21 +22,12 @@ function App() {
       .catch((err) => {
         console.error('Error fetching user:', err.response?.status, err.response?.data);
         setUser(null);
-        setError('Failed to authenticate. Please log in.');
         setLoading(false);
       });
   }, []);
 
   if (loading) {
     return <div className="container text-center mt-5">Loading...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="container text-center mt-5 text-danger">
-        {error} <a href="/login">Go to Login</a>
-      </div>
-    );
   }
 
   return (

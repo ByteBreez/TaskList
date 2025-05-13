@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const cors = require('cors'); // Single declaration
+const cors = require('cors');
 require('./config/passport');
 
 const authRoutes = require('./routes/auth');
@@ -13,10 +13,10 @@ const formRoutes = require('./routes/form');
 
 const app = express();
 
-// CORS: allow our frontend
+// CORS configuration
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'https://task-list-five-beta.vercel.app',
+    origin: 'https://task-list-five-beta.vercel.app', // No trailing slash
     credentials: true,
   })
 );
