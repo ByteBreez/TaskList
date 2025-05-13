@@ -42,14 +42,6 @@ app.use(passport.session());
 app.use('/auth', authRoutes);
 app.use('/form', formRoutes);
 
-const cors = require('cors');
-
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || 'https://task-list-five-beta.vercel.app',
-    credentials: true,
-  })
-);
 
 // Connect to MongoDB & start server
 mongoose
