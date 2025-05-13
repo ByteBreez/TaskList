@@ -8,7 +8,7 @@ function Login({ setUser }) {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/auth/user', {
+        const res = await axios.get('https://tasklist-4.onrender.com/auth/user', {
           withCredentials: true,
         });
         setUser(res.data);
@@ -21,7 +21,7 @@ function Login({ setUser }) {
   }, [setUser, navigate]);
 
   const handleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    window.location.href = 'https://tasklist-4.onrender.com/auth/google';
   };
 
   return (

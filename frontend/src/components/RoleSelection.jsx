@@ -8,7 +8,7 @@ function RoleSelection({ setUser }) {
     e.preventDefault();
     try {
       const res = await axios.post(
-        'http://localhost:5000/auth/role',
+        'https://tasklist-4.onrender.com/auth/role',
         { role },
         { withCredentials: true }
       );

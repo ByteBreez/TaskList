@@ -10,7 +10,7 @@ function GuestDashboard({ user, setUser }) {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/form', {
+        const res = await axios.get('https://tasklist-4.onrender.com/form', {
           withCredentials: true,
         });
         setFormDataList(res.data || []);
@@ -24,7 +24,7 @@ function GuestDashboard({ user, setUser }) {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/auth/logout', {
+      const response = await axios.get('https://tasklist-4.onrender.com/auth/logout', {
         withCredentials: true,
       });
       console.log('Logout response:', response.data);

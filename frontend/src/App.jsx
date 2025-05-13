@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/auth/user', { withCredentials: true })
+      .get('https://tasklist-4.onrender.com/auth/user', { withCredentials: true })
       .then((res) => {
         console.log('Fetched user:', res.data); // Log user data after fetch
         setUser(res.data);

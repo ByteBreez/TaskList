@@ -17,7 +17,7 @@ function AdminDashboard({ user, setUser }) {
 
   const fetchFormData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/form', {
+      const res = await axios.get('https://tasklist-4.onrender.com/form', {
         withCredentials: true,
       });
       console.log('Fetched form data:', res.data);
@@ -31,7 +31,7 @@ function AdminDashboard({ user, setUser }) {
   const handleCreate = async (data) => {
     try {
       console.log('Creating form data:', data);
-      const response = await axios.post('http://localhost:5000/form', data, {
+      const response = await axios.post('https://tasklist-4.onrender.com/form', data, {
         withCredentials: true,
       });
       console.log('Create response:', response.data);
@@ -45,7 +45,7 @@ function AdminDashboard({ user, setUser }) {
   const handleUpdate = async (data) => {
     try {
       console.log('Updating form data:', data, 'ID:', editingId);
-      const response = await axios.put(`http://localhost:5000/form/${editingId}`, data, {
+      const response = await axios.put(`https://tasklist-4.onrender.com/form/${editingId}`, data, {
         withCredentials: true,
       });
       console.log('Update response:', response.data);
@@ -64,7 +64,7 @@ function AdminDashboard({ user, setUser }) {
   const handleDelete = async (id) => {
     try {
       console.log('Deleting ID:', id);
-      await axios.delete(`http://localhost:5000/form/${id}`, {
+      await axios.delete(`https://tasklist-4.onrender.com/form/${id}`, {
         withCredentials: true,
       });
       await fetchFormData();
@@ -75,7 +75,7 @@ function AdminDashboard({ user, setUser }) {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/auth/logout', {
+      const response = await axios.get('https://tasklist-4.onrender.com/auth/logout', {
         withCredentials: true,
       });
       console.log('Logout response:', response.data);
