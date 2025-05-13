@@ -14,7 +14,7 @@ const app = express();
 // CORS: allow our frontend
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.CLIENT_URL || 'https://task-list-five-beta.vercel.app/',
     credentials: true,
   })
 );
