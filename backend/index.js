@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); // Add this
 const cors = require('cors');
 require('./config/passport');
 
@@ -14,7 +15,7 @@ const app = express();
 // CORS: allow our frontend
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'https://task-list-five-beta.vercel.app/',
+    origin: process.env.CLIENT_URL || 'https://task-list-five-beta.vercel.app',
     credentials: true,
   })
 );
@@ -25,7 +26,13 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // Use MongoStore
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // true in production (HTTPS)
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
   })
 );
 app.use(passport.initialize());
@@ -43,6 +50,7 @@ mongoose
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+ + 1; // Increment PORT to avoid conflicts
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);
