@@ -1,4 +1,4 @@
-// src/components/Login.jsx
+// frontend/src/components/Login.jsx
 import api from '../api';
 
 function Login({ setUser }) {

@@ -1,10 +1,11 @@
+// backend/index.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
-const MongoStore = require('connect-mongo'); // Add this
-const cors = require('cors');
+const MongoStore = require('connect-mongo');
+const cors = require('cors'); // Single declaration
 require('./config/passport');
 
 const authRoutes = require('./routes/auth');
@@ -27,11 +28,11 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // Use MongoStore
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
-      secure: process.env.NODE_ENV === 'production', // true in production (HTTPS)
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
@@ -42,7 +43,6 @@ app.use(passport.session());
 app.use('/auth', authRoutes);
 app.use('/form', formRoutes);
 
-
 // Connect to MongoDB & start server
 mongoose
   .connect(process.env.MONGO_URI)
@@ -52,7 +52,6 @@ mongoose
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
- + 1; // Increment PORT to avoid conflicts
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);

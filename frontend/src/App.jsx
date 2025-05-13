@@ -1,14 +1,16 @@
-// src/App.jsx
+// frontend/src/App.jsx
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import api from './api'; // Your axios instance
-import RoleSelection from './components/RoleSelection';
+import api from './api';
 import Login from './components/Login';
-// Import other components as needed
+import RoleSelection from './components/RoleSelection';
+import AdminDashboard from './components/AdminDashboard';
+import GuestDashboard from './components/GuestDashboard';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     api
@@ -20,33 +22,69 @@ function App() {
       })
       .catch((err) => {
         console.error('Error fetching user:', err.response?.status, err.response?.data);
-        setUser(null); // Reset user on any error (e.g., 401)
+        setUser(null);
+        setError('Failed to authenticate. Please log in.');
         setLoading(false);
       });
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <div className="container text-center mt-5">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container text-center mt-5 text-danger">
+        {error} <a href="/login">Go to Login</a>
+      </div>
+    );
+  }
 
   return (
-    <Routes>
-      <Route path="/login" element={<Login setUser={setUser} />} />
-      <Route
-        path="/role-selection"
-        element={
-          user ? (
-            !user.role ? (
-              <RoleSelection setUser={setUser} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/role-selection" /> : <Login setUser={setUser} />}
+        />
+        <Route
+          path="/role-selection"
+          element={
+            user ? (
+              !user.role ? (
+                <RoleSelection setUser={setUser} />
+              ) : (
+                <Navigate to={user.role === 'admin' ? '/admin' : '/guest'} />
+              )
             ) : (
-              <Navigate to={user.role === 'admin' ? '/admin' : '/guest'} />
+              <Navigate to="/login" />
             )
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      {/* Add other routes like /admin, /guest, etc. */}
-      <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            user && user.role === 'admin' ? (
+              <AdminDashboard user={user} setUser={setUser} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/guest"
+          element={
+            user && user.role === 'guest' ? (
+              <GuestDashboard user={user} setUser={setUser} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 
