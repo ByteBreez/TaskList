@@ -1,3 +1,4 @@
+// routes/auth.js
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
@@ -26,6 +27,7 @@ router.post('/role', async (req, res) => {
     );
     res.json(user);
   } catch (err) {
+    console.error('Error updating role:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -54,7 +56,8 @@ router.get('/logout', (req, res) => {
       res.clearCookie('connect.sid', {
         path: '/',
         httpOnly: true,
-        secure: false, // Set to true if using HTTPS
+        secure: process.env.NODE_ENV === 'production', // true in production
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Match session config
       });
       res.status(200).json({ message: 'Logged out successfully' });
     });

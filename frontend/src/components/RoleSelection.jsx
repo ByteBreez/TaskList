@@ -1,16 +1,24 @@
+// src/components/RoleSelection.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 function RoleSelection({ setUser }) {
   const [role, setRole] = useState('guest');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post('/auth/role', { role });
+      console.log('Role updated:', res.data);
       setUser(res.data);
+      navigate(res.data.role === 'admin' ? '/admin' : '/guest');
     } catch (err) {
-      console.error('Error selecting role:', err);
+      console.error('Error selecting role:', err.response?.status, err.response?.data);
+      if (err.response?.status === 401) {
+        navigate('/login');
+      }
     }
   };
 
@@ -30,10 +38,7 @@ function RoleSelection({ setUser }) {
               <option value="admin">Admin</option>
             </select>
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-          >
+          <button type="submit" className="btn btn-primary w-100">
             Submit
           </button>
         </form>
