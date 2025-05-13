@@ -31,6 +31,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={user ? <Navigate to="/role-selection" /> : <Login setUser={setUser} />} />
         <Route
           path="/role-selection"
