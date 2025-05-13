@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 import Login from './components/Login';
 import RoleSelection from './components/RoleSelection';
 import AdminDashboard from './components/AdminDashboard';
@@ -11,8 +11,8 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get('https://tasklist-4.onrender.com/auth/user', { withCredentials: true })
+      api
+      .get('/auth/user')
       .then((res) => {
         console.log('Fetched user:', res.data); // Log user data after fetch
         setUser(res.data);
@@ -31,7 +31,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={user ? <Navigate to="/role-selection" /> : <Login />} />
+        <Route path="/login" element={user ? <Navigate to="/role-selection" /> : <Login setUser={setUser} />} />
         <Route
           path="/role-selection"
           element={

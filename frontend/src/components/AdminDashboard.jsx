@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import FormComponent from './FormComponent';
 import FormList from './FormList';
@@ -17,9 +17,7 @@ function AdminDashboard({ user, setUser }) {
 
   const fetchFormData = async () => {
     try {
-      const res = await axios.get('https://tasklist-4.onrender.com/form', {
-        withCredentials: true,
-      });
+      const res = await api.get('/form');
       console.log('Fetched form data:', res.data);
       setFormDataList(res.data || []);
     } catch (err) {
@@ -31,9 +29,7 @@ function AdminDashboard({ user, setUser }) {
   const handleCreate = async (data) => {
     try {
       console.log('Creating form data:', data);
-      const response = await axios.post('https://tasklist-4.onrender.com/form', data, {
-        withCredentials: true,
-      });
+      const response = await api.post('/form', data);
       console.log('Create response:', response.data);
       setShowCreateModal(false);
       await fetchFormData();
@@ -45,9 +41,7 @@ function AdminDashboard({ user, setUser }) {
   const handleUpdate = async (data) => {
     try {
       console.log('Updating form data:', data, 'ID:', editingId);
-      const response = await axios.put(`https://tasklist-4.onrender.com/form/${editingId}`, data, {
-        withCredentials: true,
-      });
+      const response = await api.put(`/form/${editingId}`, data);
       console.log('Update response:', response.data);
       setEditingId(null);
       await fetchFormData();
@@ -64,9 +58,7 @@ function AdminDashboard({ user, setUser }) {
   const handleDelete = async (id) => {
     try {
       console.log('Deleting ID:', id);
-      await axios.delete(`https://tasklist-4.onrender.com/form/${id}`, {
-        withCredentials: true,
-      });
+      await api.delete(`/form/${id}`);
       await fetchFormData();
     } catch (err) {
       console.error('Error deleting form data:', err.response?.data || err.message);
@@ -75,9 +67,7 @@ function AdminDashboard({ user, setUser }) {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get('https://tasklist-4.onrender.com/auth/logout', {
-        withCredentials: true,
-      });
+      const response = await api.get('/auth/logout');
       console.log('Logout response:', response.data);
       setUser(null);
       navigate('/login');

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,9 +8,7 @@ function Login({ setUser }) {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const res = await axios.get('https://tasklist-4.onrender.com/auth/user', {
-          withCredentials: true,
-        });
+        const res = await api.get('/auth/user');
         setUser(res.data);
         navigate('/role-selection');
       } catch (err) {
@@ -21,7 +19,7 @@ function Login({ setUser }) {
   }, [setUser, navigate]);
 
   const handleLogin = () => {
-    window.location.href = 'https://tasklist-4.onrender.com/auth/google';
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   return (

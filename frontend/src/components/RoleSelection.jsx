@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function RoleSelection({ setUser }) {
   const [role, setRole] = useState('guest');
@@ -7,11 +7,7 @@ function RoleSelection({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/role`,
-        { role },
-        { withCredentials: true }
-      );
+      const res = await api.post('/auth/role', { role });
       setUser(res.data);
     } catch (err) {
       console.error('Error selecting role:', err);

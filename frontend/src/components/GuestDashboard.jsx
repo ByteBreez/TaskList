@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api'
 import { useNavigate } from 'react-router-dom';
 import FormList from './FormList';
 
@@ -10,9 +10,7 @@ function GuestDashboard({ user, setUser }) {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const res = await axios.get('https://tasklist-4.onrender.com/form', {
-          withCredentials: true,
-        });
+        const res = await api.get('/form');
         setFormDataList(res.data || []);
       } catch (err) {
         console.error('Error fetching form data:', err);
@@ -24,9 +22,7 @@ function GuestDashboard({ user, setUser }) {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get('https://tasklist-4.onrender.com/auth/logout', {
-        withCredentials: true,
-      });
+      const response = await api.get('/auth/logout');
       console.log('Logout response:', response.data);
       setUser(null);
       navigate('/login');
